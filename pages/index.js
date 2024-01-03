@@ -6,46 +6,46 @@ import Git from "../components/Git";
 import env from '../enviroment/env'
 
 
-const {Octokit} = require("@octokit/rest");
+// const {Octokit} = require("@octokit/rest");
 
-var calculated = false;
-var followersCountOld = 0;
+// var calculated = false;
+// var followersCountOld = 0;
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
-  const url = env.uri;
-  const api_key = env.api_key;
-  const channel_id = env.channel_id;
+//   const url = env.uri;
+//   const api_key = env.api_key;
+//   const channel_id = env.channel_id;
   
-  const oktokit = new Octokit({
-    auth: env.github_token
-  });
+//   const oktokit = new Octokit({
+//     auth: env.github_token
+//   });
   
-  if (!calculated) {
-    var followers = 0;
-    var followersCountCurrent = 0;
-    followersCountOld = 0;
-    for (var i = 1; i < 9; ++i) {
-        followers = await oktokit.request(`/users/winderton/followers?per_page=100&page=`+i);
-        followersCountCurrent += followers.data.length;
-    }
-    followersCountOld = followersCountCurrent;
-    calculated = true;
-  }
+//   if (!calculated) {
+//     var followers = 0;
+//     var followersCountCurrent = 0;
+//     followersCountOld = 0;
+//     for (var i = 1; i < 9; ++i) {
+//         followers = await oktokit.request(`/users/winderton/followers?per_page=100&page=`+i);
+//         followersCountCurrent += followers.data.length;
+//     }
+//     followersCountOld = followersCountCurrent;
+//     calculated = true;
+//   }
 
-  setInterval(function() {
-    calculated = false;
-  }, 1000 * 60 * 60);
+//   setInterval(function() {
+//     calculated = false;
+//   }, 1000 * 60 * 60);
 
-  const ytRes = await fetch(`${url}&id=${channel_id}&key=${api_key}`);
-  const ytData = await ytRes.json();
+//   const ytRes = await fetch(`${url}&id=${channel_id}&key=${api_key}`);
+//   const ytData = await ytRes.json();
 
-  const result = {followersCountOld, ytData};
+//   const result = {followersCountOld, ytData};
 
-  return {
-    props: {result} 
-  }
-}
+//   return {
+//     props: {result} 
+//   }
+// }
 
 
 export default function Home({result}) {
@@ -65,10 +65,10 @@ export default function Home({result}) {
         <About></About>
       </div>
       <div>
-        <Git other={result.followersCountOld}></Git>
+        {/* <Git other={result.followersCountOld}></Git> */}
       </div>
       <div>
-        <Youtube other={result.ytData}></Youtube>
+        {/*<Youtube other={result.ytData}></Youtube>*/}
       </div>
     </main>
   );
