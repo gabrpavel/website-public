@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
 import style from "../styles/About.module.css";
 import Head from "next/head";
-import { useState } from "react";
+import { useState } from "react"
 
 
 export default function SignUp() {
