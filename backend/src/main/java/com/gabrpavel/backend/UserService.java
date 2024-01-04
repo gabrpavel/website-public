@@ -11,17 +11,16 @@ public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
-                String.format("User '%s' not found", username)
-        ));
-        return null;
-    }
-
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(username).orElseThrow(()->new UsernameNotFoundException(
+                String.format("User '%s' not found", username)
+        ));
+        return null;
+    }
 }
+

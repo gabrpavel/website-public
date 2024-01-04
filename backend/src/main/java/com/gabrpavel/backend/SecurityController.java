@@ -24,40 +24,42 @@ public class SecurityController {
     private JwtCore jwtCore;
 
     @Autowired
-    public void setJwtCore(JwtCore jwtCore) {
-        this.jwtCore = jwtCore;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
     @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    public void setJwtCore(JwtCore jwtCore) {
+        this.jwtCore = jwtCore;
     }
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @PostMapping("/signup")
     ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
-        if (userRepository.existsUserByUsername(signupRequest.getUsername())) {
+        if(userRepository.existsUserByUsername(signupRequest.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different name");
         }
-        if (userRepository.existsUserByEmail(signupRequest.getEmail())) {
+        if(userRepository.existsUserByEmail(signupRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different email");
         }
 
         User user = new User();
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
-        user.setPassword(signupRequest.getPassword());
+        String hashed = passwordEncoder.encode(signupRequest.getPassword());
+        user.setPassword(hashed);
+
         userRepository.save(user);
+
         return ResponseEntity.ok("Success, baby!");
     }
-
     @PostMapping("/signin")
     ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest) {
         Authentication authentication = null;

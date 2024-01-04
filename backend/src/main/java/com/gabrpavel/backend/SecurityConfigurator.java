@@ -38,10 +38,11 @@ public class SecurityConfigurator {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    public AuthenticationManagerBuilder configureAuthenticationManagerBuilder(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
-        return authenticationManagerBuilder;
-    }
+//    @Bean
+//    public AuthenticationManagerBuilder configureAuthenticationManagerBuilder(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+//        authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
+//        return authenticationManagerBuilder;
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
