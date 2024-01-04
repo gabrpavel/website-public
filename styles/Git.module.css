@@ -1,6 +1,6 @@
 .container {
   color: white;
-  background-image: url("../public/gitback.png");
+  background-image: url("/gitback.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
