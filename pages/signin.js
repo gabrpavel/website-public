@@ -1,5 +1,6 @@
 import style from "../styles/About.module.css";
 import { useRouter } from "next/router"
+import React, { useState } from 'react';
 import Head from "next/head";
 
 
