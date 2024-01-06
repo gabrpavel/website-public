@@ -1,33 +1,40 @@
 import style from "../styles/About.module.css";
 import Head from "next/head";
-import { iseEffect, useEffect, useState } from "react"
-
-
-
+import { useEffect, useState } from "react";
 
 const User = () => {
-    const [userName, setuserName] = useState()
-    const [item, setItem] = useState("")
+    const [userName, setUserName] = useState("");
+    const [item, setItem] = useState("");
 
     useEffect(() => {
-        setItem(localStorage.getItem("token"))
-        fetchContent()
-    }, [])
+        const token = localStorage.getItem("token");
+        if (token) {
+            setItem(token);
+            fetchContent(token);
+        }
+    }, []);
 
-    async function handle() {
-        const res = await fetch('http://localhost:8080/secured/user', {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
+    async function fetchContent(token) {
+        try {
+            const res = await fetch('http://localhost:8080/secured/user', {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            });
+            if (res.ok) {
+                const json = await res.text();
+                setUserName(json);
+            } else {
+                setUserName(""); // Reset userName if the request fails or is unauthorized
             }
-        })
-        if (res.ok) {
-            const json = await res.text()
-            setUserName(json)
+        } catch (error) {
+            console.error("Error occurred: ", error);
+            setUserName(""); // Reset userName in case of an error
         }
     }
 
-    return(
+    return (
         <>
             <Head>
                 <title>USER</title>
@@ -36,10 +43,10 @@ const User = () => {
             </Head>
             <div className={style.containerSign}>
                 <div className={style.form}>
-                    {
-                        item !== null?
-                        <p>Signed in as: {userName}</p>
-                        : <p>UNAUTHORIZED</p>
+                    {item !== null ?
+                        (userName ? <p>Signed in as: {userName}</p> : <p>UNAUTHORIZED</p>)
+                        :
+                        <p>UNAUTHORIZED</p>
                     }
                 </div>
             </div>
@@ -48,5 +55,3 @@ const User = () => {
 }
 
 export default User;
-
-
